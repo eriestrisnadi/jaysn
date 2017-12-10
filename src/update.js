@@ -1,6 +1,6 @@
 import { struct } from 'superstruct';
-import { readFileSync, writeFileSync } from 'fs';
-import { fromJS, Map, List } from 'immutable';
+import { writeFileSync } from 'fs';
+import { fromJS, List } from 'immutable';
 import { JAYSN_PATH } from './jaysn';
 
 /**
@@ -33,25 +33,29 @@ import { JAYSN_PATH } from './jaysn';
  * // => object for 'bonbon'
  */
 export function update(data, predicate) {
-    const storage = fromJS(this.storage);
-    const prevData = List(storage.get(this.keyName) || []);
-    let currentData = storage;
-    const id = prevData.findIndex(predicate);
-    if(id >= 0){
-        currentData = storage.set(this.keyName, prevData.set(id, prevData.get(id).mergeDeep(data)));
-    }
+  const storage = fromJS(this.storage);
+  const prevData = List(storage.get(this.keyName) || []);
+  let currentData = storage;
+  const id = prevData.findIndex(predicate);
+  if (id >= 0) {
+    currentData = storage.set(this.keyName, prevData.set(id, prevData.get(id).mergeDeep(data)));
+  }
 
-    try {
-        const Struct = struct(this.schema)(data);
-        writeFileSync(JAYSN_PATH, JSON.stringify(
-            currentData,
-            null,
-            4
-        ), { encoding: 'utf8' });
-    } catch (e) {
-        const { message, path, data, type, value } = e;
-        throw new Error(message);
-    }
-    
-    return currentData.get(this.keyName).find(predicate).toJS() || undefined;
+  try {
+    struct(this.schema)(data);
+    writeFileSync(JAYSN_PATH, JSON.stringify(
+      currentData,
+      null,
+      4,
+    ), { encoding: 'utf8' });
+  } catch (e) {
+    const {
+      message,
+    } = e;
+    throw new Error(message);
+  }
+
+  return currentData.get(this.keyName).find(predicate).toJS() || undefined;
 }
+
+export default update;

@@ -9,10 +9,9 @@
 
 import { assert } from 'chai';
 import { existsSync, unlinkSync } from 'fs';
-import { cwd } from 'process';
-import { join } from 'path';
 import { fromJS } from 'immutable';
 import { Jaysn, JAYSN_PATH } from '../dist/jaysn.es';
+
 const userSchema = {
   id: 'number',
   title: 'string',
@@ -20,12 +19,12 @@ const userSchema = {
   tags: ['string'],
   author: {
     id: 'number',
-  }
+  },
 };
 const postSchema = {
   id: 'number',
   title: 'string',
-  user_id: 'number'
+  user_id: 'number',
 };
 const userData = {
   id: 34,
@@ -33,38 +32,38 @@ const userData = {
   tags: ['news', 'features'],
   author: {
     id: 1,
-  }
+  },
 };
 const postData = {
   id: 30,
   title: 'Post User 34',
-  user_id: 34
+  user_id: 34,
 };
 const postData2 = {
   id: 20,
   title: 'Post User 34 with id 20',
-  user_id: 34
+  user_id: 34,
 };
 
 describe('new Jaysn()', () => {
 
   before(() => {
-    if(existsSync(JAYSN_PATH)){
+    if (existsSync(JAYSN_PATH)) {
       unlinkSync(JAYSN_PATH);
     }
-    
-    new Jaysn('posts', postSchema)
-    .add(postData);
 
     new Jaysn('posts', postSchema)
-    .add(postData2);
+      .add(postData);
+
+    new Jaysn('posts', postSchema)
+      .add(postData2);
   });
 
   describe('.add()', () => {
 
     it('should insert new item to the collection if validate true, else throw an `error`', () => {
       const result = fromJS(new Jaysn('users', userSchema)
-      .add(userData)).equals(fromJS([userData]));
+        .add(userData)).equals(fromJS([userData]));
 
       assert.isTrue(result);
     });
@@ -75,7 +74,7 @@ describe('new Jaysn()', () => {
 
     it('should returns an array of collection', () => {
       const result = fromJS(new Jaysn('users', userSchema)
-      .get()).equals(fromJS([userData]));
+        .get()).equals(fromJS([userData]));
 
       assert.isTrue(result);
     });
@@ -86,7 +85,7 @@ describe('new Jaysn()', () => {
 
     it('should returns the matched element, else `undefined`.', () => {
       const result = fromJS(new Jaysn('users', userSchema)
-      .find(o => o.get('id') === 34)).equals(fromJS(userData));
+        .find(o => o.get('id') === 34)).equals(fromJS(userData));
 
       assert.isTrue(result);
     });
@@ -97,10 +96,8 @@ describe('new Jaysn()', () => {
 
     it('should returns the new filtered array.', () => {
       const result = fromJS(new Jaysn('users', userSchema)
-      .filter(o => {
-        return o.get('id') === 34
-      })).equals(fromJS([userData]));
-      
+        .filter(o => o.get('id') === 34)).equals(fromJS([userData]));
+
       assert.isTrue(result);
     });
 
@@ -112,8 +109,7 @@ describe('new Jaysn()', () => {
       const relation = fromJS(postData);
       const result = fromJS(new Jaysn('users', userSchema)
         .hasOne('posts', 'user_id', 'id')
-        .find(o => o.get('id') === 34)
-      ).equals(fromJS(userData).set('post', relation));
+        .find(o => o.get('id') === 34)).equals(fromJS(userData).set('post', relation));
 
       assert.isTrue(result);
     });
@@ -126,8 +122,7 @@ describe('new Jaysn()', () => {
       const relation = fromJS([postData, postData2]);
       const result = fromJS(new Jaysn('users', userSchema)
         .hasMany('posts', 'user_id', 'id')
-        .find(o => o.get('id') === 34)
-      ).equals(fromJS(userData).set('posts', relation));
+        .find(o => o.get('id') === 34)).equals(fromJS(userData).set('posts', relation));
 
       assert.isTrue(result);
     });
@@ -138,11 +133,9 @@ describe('new Jaysn()', () => {
 
     it('should update an item and returns the updated item.', () => {
       const result = fromJS(new Jaysn('users', userSchema)
-      .update({
-        title: 'Hello Jaysn',
-      }, o => {
-        return o.get('id') === 34
-      })).equals(fromJS(userData).set('title', 'Hello Jaysn'));
+        .update({
+          title: 'Hello Jaysn',
+        }, o => o.get('id') === 34)).equals(fromJS(userData).set('title', 'Hello Jaysn'));
 
       assert.isTrue(result);
     });
@@ -153,9 +146,7 @@ describe('new Jaysn()', () => {
 
     it('should delete an item and returns the new array without the deleted item.', () => {
       const result = fromJS(new Jaysn('users', userSchema)
-      .remove(o => {
-        return o.get('id') === 34
-      })).equals(fromJS([userData]).delete(0));
+        .remove(o => o.get('id') === 34)).equals(fromJS([userData]).delete(0));
 
       assert.isTrue(result);
     });

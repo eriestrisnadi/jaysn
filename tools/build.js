@@ -66,7 +66,7 @@ writeFileSync('dist/package.json', JSON.stringify(pkg, null, 2), 'utf-8');
 writeFileSync('dist/LICENSE', readFileSync('LICENSE', 'utf-8'), 'utf-8');
 
 const buildConfig = bundles.map(config => ({
-  input: `src/index.js`,
+  input: 'src/index.js',
   external: ['fs', 'process', 'util', ...Object.keys(pkg.dependencies)],
   plugins: [
     babel({

@@ -1,5 +1,5 @@
 import { struct } from 'superstruct';
-import { readFileSync, writeFileSync } from 'fs';
+import { writeFileSync } from 'fs';
 import { fromJS, List, Map } from 'immutable';
 import { JAYSN_PATH } from './jaysn';
 
@@ -28,22 +28,26 @@ import { JAYSN_PATH } from './jaysn';
  * // => objects for ['barney','fred','pebbles']
  */
 export function add(data) {
-    const storage = fromJS(this.data);
-    const prevData = List(storage.get(this.keyName) || []);
-    const currentData = Map().set(this.keyName, prevData.concat(List([data])));
-    const mergedData = storage.mergeDeep(currentData);
-    const isDuplicate = fromJS(data).equals(prevData.find(o => fromJS(data).equals(o)));
+  const storage = fromJS(this.data);
+  const prevData = List(storage.get(this.keyName) || []);
+  const currentData = Map().set(this.keyName, prevData.concat(List([data])));
+  const mergedData = storage.mergeDeep(currentData);
+  const isDuplicate = fromJS(data).equals(prevData.find(o => fromJS(data).equals(o)));
 
-    if(isDuplicate) {
-        throw new Error(`Value item shouldn't be same as existng, duplicate detected!`);
-    }
+  if (isDuplicate) {
+    throw new Error('Value item shouldn\'t be same as existng, duplicate detected!');
+  }
 
-    try {
-        const Struct = struct(this.schema)(data);
-        writeFileSync(JAYSN_PATH, JSON.stringify(mergedData, null, 4), { encoding: 'utf8' });
-        return currentData.get(this.keyName).toJS();
-    } catch (e) {
-        const { message, path, data, type, value } = e;
-        throw new Error(message);
-    }
+  try {
+    struct(this.schema)(data);
+    writeFileSync(JAYSN_PATH, JSON.stringify(mergedData, null, 4), { encoding: 'utf8' });
+    return currentData.get(this.keyName).toJS();
+  } catch (e) {
+    const {
+      message,
+    } = e;
+    throw new Error(message);
+  }
 }
+
+export default add;

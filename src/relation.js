@@ -1,8 +1,5 @@
-import { struct } from 'superstruct';
-import { readFileSync } from 'fs';
 import { fromJS, List } from 'immutable';
-import { default as stemmer } from 'stemmer';
-import { JAYSN_PATH } from './jaysn';
+import stemmer from 'stemmer';
 
 /**
  * Re-create the jaysn with hasOne relation.
@@ -40,24 +37,24 @@ import { JAYSN_PATH } from './jaysn';
  *    ]
  */
 export function hasOne(keyName, foreignKey, localKey) {
-    if (
-        typeof keyName != 'string' ||
-        typeof foreignKey != 'string' ||
-        typeof localKey != 'string'
-    ) {
-        throw new Error(`the predicate expected (keyName: string, foreignKey: string, localKey: string)`);
-    }
-    const storage = fromJS(this.data);
-    const localData = List(storage.get(this.keyName) || []);
-    const foreignData = List(storage.get(keyName) || []);
-    const getData = localData.map(o => {
-        return o.set(stemmer(keyName), foreignData.find(rel => {
-            return rel.get(foreignKey) === o.get(localKey);
-        }));
-    });
+  if (
+    typeof keyName !== 'string' ||
+        typeof foreignKey !== 'string' ||
+        typeof localKey !== 'string'
+  ) {
+    throw new Error('the predicate expected (keyName: string, foreignKey: string, localKey: string)');
+  }
+  const storage = fromJS(this.data);
+  const localData = List(storage.get(this.keyName) || []);
+  const foreignData = List(storage.get(keyName) || []);
+  const getData = localData.map(o => o.set(stemmer(keyName), foreignData.find(rel => {
+    const a = rel.get(foreignKey);
+    const b = o.get(localKey);
+    return a === b;
+  })));
 
-    this.data = storage.set(this.keyName, getData).toJS();
-    return this;
+  this.data = storage.set(this.keyName, getData).toJS();
+  return this;
 }
 
 /**
@@ -96,22 +93,22 @@ export function hasOne(keyName, foreignKey, localKey) {
  *    ]
  */
 export function hasMany(keyName, foreignKey, localKey) {
-    if (
-        typeof keyName != 'string' ||
-        typeof foreignKey != 'string' ||
-        typeof localKey != 'string'
-    ) {
-        throw new Error(`the predicate expected (keyName: string, foreignKey: string, localKey: string)`);
-    }
-    const storage = fromJS(this.data);
-    const localData = List(storage.get(this.keyName) || []);
-    const foreignData = List(storage.get(keyName) || []);
-    const getData = localData.map(o => {
-        return o.set(keyName, foreignData.filter(rel => {
-            return rel.get(foreignKey) === o.get(localKey);
-        }) || []);
-    });
+  if (
+    typeof keyName !== 'string' ||
+        typeof foreignKey !== 'string' ||
+        typeof localKey !== 'string'
+  ) {
+    throw new Error('the predicate expected (keyName: string, foreignKey: string, localKey: string)');
+  }
+  const storage = fromJS(this.data);
+  const localData = List(storage.get(this.keyName) || []);
+  const foreignData = List(storage.get(keyName) || []);
+  const getData = localData.map(o => o.set(keyName, foreignData.filter(rel => {
+    const a = rel.get(foreignKey);
+    const b = o.get(localKey);
+    return a === b;
+  }) || []));
 
-    this.data = storage.set(this.keyName, getData).toJS();
-    return this;
+  this.data = storage.set(this.keyName, getData).toJS();
+  return this;
 }

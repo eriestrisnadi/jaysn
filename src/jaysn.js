@@ -9,24 +9,25 @@ import { filter } from './filter';
 import { remove } from './remove';
 import { update } from './update';
 import { hasOne, hasMany } from './relation';
+
 export const JAYSN_PATH = join(cwd(), '.jaysn');
 
-export function Jaysn (keyName, schema = {}) {
-  if(!keyName){
+export function Jaysn(keyName, schema = {}) {
+  if (!keyName) {
     throw new Error('keyName should be not null');
   }
 
-  if(typeof keyName != 'string') {
+  if (typeof keyName !== 'string') {
     throw new Error('keyName should be a string');
   }
 
   this.keyName = keyName;
-  this.schema = Object.keys(schema).reduce((obj, key) => {
-    return { ...obj, [key]: struct.optional(schema[key]) }
-  }, {});
+  this.schema = Object.keys(schema).reduce((obj, key) => (
+    { ...obj, [key]: struct.optional(schema[key]) }
+  ), {});
 
-  if(!existsSync(JAYSN_PATH)) {
-    writeFileSync(JAYSN_PATH, JSON.stringify({}, null, 4), { encoding: 'utf8' } );
+  if (!existsSync(JAYSN_PATH)) {
+    writeFileSync(JAYSN_PATH, JSON.stringify({}, null, 4), { encoding: 'utf8' });
   }
 
   this.storage = JSON.parse(readFileSync(JAYSN_PATH, 'utf8'));

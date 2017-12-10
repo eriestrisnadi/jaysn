@@ -1,7 +1,4 @@
-import { struct } from 'superstruct';
-import { readFileSync, writeFileSync } from 'fs';
-import { fromJS, Map } from 'immutable';
-import { JAYSN_PATH } from './jaysn';
+import { fromJS } from 'immutable';
 
 /**
  * Iterates over elements of, returning the first element
@@ -29,7 +26,9 @@ import { JAYSN_PATH } from './jaysn';
  * // => object for 'barney'
  */
 export function find(predicate) {
-    const storage = fromJS(this.data);
-    
-    return storage.get(this.keyName).find(predicate).toJS() || undefined;
+  const storage = fromJS(this.data);
+
+  return storage.get(this.keyName).find(predicate).toJS() || undefined;
 }
+
+export default find;

@@ -1,7 +1,4 @@
-import { struct } from 'superstruct';
-import { readFileSync, writeFileSync } from 'fs';
 import { fromJS, List } from 'immutable';
-import { JAYSN_PATH } from './jaysn';
 
 /**
  * Returning an array of all elements.
@@ -27,8 +24,10 @@ import { JAYSN_PATH } from './jaysn';
  * // => objects for ['barney', 'fred', 'pebbles']
  */
 export function get() {
-    const storage = fromJS(this.data);
-    const getData = List(storage.get(this.keyName) || []);
-    
-    return getData.toJS();
+  const storage = fromJS(this.data);
+  const getData = List(storage.get(this.keyName) || []);
+
+  return getData.toJS();
 }
+
+export default get;

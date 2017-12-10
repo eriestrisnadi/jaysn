@@ -1,6 +1,5 @@
-import { struct } from 'superstruct';
-import { readFileSync, writeFileSync } from 'fs';
-import { fromJS, Map, List } from 'immutable';
+import { writeFileSync } from 'fs';
+import { fromJS, List } from 'immutable';
 import { JAYSN_PATH } from './jaysn';
 
 /**
@@ -29,18 +28,20 @@ import { JAYSN_PATH } from './jaysn';
  * // => objects for ['fred','pebbles']
  */
 export function remove(predicate) {
-    const storage = fromJS(this.data);
-    const prevData = List(storage.get(this.keyName) || []);
-    let currentData = storage;
-    const id = prevData.findIndex(predicate);
-    if(id >= 0){
-        currentData = storage.set(this.keyName, prevData.delete(id));
-        writeFileSync(JAYSN_PATH, JSON.stringify(
-            currentData,
-            null,
-            4
-        ), { encoding: 'utf8' });
-    }
-    
-    return currentData.get(this.keyName).toJS();
+  const storage = fromJS(this.data);
+  const prevData = List(storage.get(this.keyName) || []);
+  let currentData = storage;
+  const id = prevData.findIndex(predicate);
+  if (id >= 0) {
+    currentData = storage.set(this.keyName, prevData.delete(id));
+    writeFileSync(JAYSN_PATH, JSON.stringify(
+      currentData,
+      null,
+      4,
+    ), { encoding: 'utf8' });
+  }
+
+  return currentData.get(this.keyName).toJS();
 }
+
+export default remove;
