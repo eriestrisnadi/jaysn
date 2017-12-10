@@ -2,8 +2,7 @@ sudo: required
 language: node_js
 node_js:
   - '6'
-  - '5'
-  - '4'
+  - '7'
 before_install: # if "install" is overridden
   # Repo for Yarn
   - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
