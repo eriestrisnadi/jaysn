@@ -1,18 +1,18 @@
-import fs from 'fs';
-import path from 'path';
+import { readFileSync, existsSync, mkdirSync, writeFileSync } from 'fs';
+import { join, resolve } from 'path';
 import { minify } from 'uglify-es';
 import buble from 'rollup-plugin-buble';
 import commonjs from 'rollup-plugin-commonjs';
 import json from 'rollup-plugin-json';
 import saveLicense from 'uglify-save-license';
 import stripBanner from 'rollup-plugin-strip-banner';
-import resolve from 'rollup-plugin-node-resolve';
+import nodeResolve from 'rollup-plugin-node-resolve';
 import pkg from '../package.json';
 
-const copyright = fs.readFileSync(path.join('tools', 'COPYRIGHT'), 'utf-8');
+const copyright = readFileSync(join('tools', 'COPYRIGHT'), 'utf-8');
 
-const SRC_DIR = path.resolve('src');
-const DIST_DIR = path.resolve('dist');
+const SRC_DIR = resolve('src');
+const DIST_DIR = resolve('dist');
 
 export default {
   sourceMap: false,
@@ -22,18 +22,18 @@ export default {
     .replace('{pkg.author}', pkg.author)
     .replace('{pkg.license}', pkg.license),
   name: pkg.name,
-  input: path.join(SRC_DIR, 'index.js'),
+  input: join(SRC_DIR, 'index.js'),
   external: ['fs', 'process', 'util', ...Object.keys(pkg.dependencies)],
   globals: {
     immutable: 'immutable',
   },
   output: {
     exports: 'named',
-    file: path.join(DIST_DIR, `${pkg.name}.js`),
+    file: join(DIST_DIR, `${pkg.name}.js`),
     format: 'cjs',
   },
   plugins: [
-    resolve(),
+    nodeResolve(),
     commonjs(),
     json(),
     stripBanner(),
@@ -47,15 +47,11 @@ export default {
           compress: { comparisons: true, pure_getters: true, unsafe: true },
         });
 
-        if (!fs.existsSync(DIST_DIR)) {
-          fs.mkdirSync(DIST_DIR);
+        if (!existsSync(DIST_DIR)) {
+          mkdirSync(DIST_DIR);
         }
 
-        fs.writeFileSync(
-          path.join(DIST_DIR, `${pkg.name}.min.js`),
-          result.code,
-          'utf8',
-        );
+        writeFileSync(join(DIST_DIR, `${pkg.name}.min.js`), result.code, { encoding: 'utf8' });
       },
     },
   ],
