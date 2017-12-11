@@ -26,4 +26,4 @@ deploy:
   email: me@eries.id
   name: Eries Trisnadi
   on:
-    branch: master
+    branch: dev
