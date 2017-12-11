@@ -73,7 +73,6 @@
     "bundle:cjs": "rollup -c tools/build-cjs.js",
     "bundle:es": "rollup -c tools/build-es.js",
     "prepublish": "run-s build",
-    "publish:docs": "easystatic deploy docs --repo lowsprofile/jaysn",
-    "start": "easystatic start docs"
+    "publish:docs": "./tools/deploy.sh"
   }
 }
