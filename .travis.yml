@@ -1,8 +1,5 @@
 sudo: required
 language: node_js
-env:
-  global:
-    secure: JZ3PAGjhEfBGfkh9txzjFiWdSJ0+L+6lEJtyQtrXlmQjLufFrjAfThh38mQgwYzTP49KJp1dd1jlQ4q+xOPTGLDvi86jOqO29j1g5bMvFPrFU33ToxbLlSHXR0ROOsbZKTacylPgjpX1AH9O5s8KU9c7a1ZOeJyt/uwBhFASvFhgqAvzCPCYVHy2lpWHNnl4Qy5FKZbqvUVkuSdZ1RjCc+rhYBUuQzfmI4UwW+zK7wyQUf4a6U5/q1Pp6lOr/lbWwacMhsnCwvd/Mkvl4q6R4MUg4I7ds+GRQ68KwuTh6nGF1LTGLCplvCypSCmfTOVPNLeRwXXHIHc8l3eQqEq/pJgOA7rUIjP7lWLbsSlvykSWsxQ96nXYLx2NDAK4vVwVXVoVir0ffXs7z3/yrL8mO62pfpnadXqjqRzfNLrW0zXCYrBoB0lu/k7kHRN1FMc0XUZLNBhFM5RHlBmQDjY1m/iaXh6fnuxheC0nZuyk1RXVQ54eAlsh1pGSSStbjqjmk2bqb3WwU5UoxZH5Txjq9jc+UQ9cZkc/Wpjhg9dbWMzNQlxruakMaORmZ0WZ2adFc4avkL0rAH5SAshSiU0x+7d7bKkUwCGeenBG6sVLfK0a4GMKXmR6kQxdeXKIxCUGfZH9NmHEv0Mwv5/WuSP91GW7+iUaBcKaz39HBamJOCQ=
 node_js:
 - '6'
 - '7'
@@ -20,10 +17,3 @@ script:
 - yarn test:cover
 after_success:
 - yarn coverage
-deploy:
-- provider: script
-  skip_cleanup: true
-  script: yarn publish:docs
-  on:
-    branch: master
-    repo: lowsprofile/jaysn
