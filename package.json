@@ -40,12 +40,10 @@
     "eslint": "^4.12.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
-    "mkdirp": "^0.5.1",
     "mocha": "^4.0.1",
     "mustache": "^2.3.0",
     "npm-run-all": "^4.1.2",
     "nyc": "^11.3.0",
-    "rimraf": "^2.6.2",
     "rollup": "^0.52.0",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-buble": "^0.18.0",
@@ -54,6 +52,7 @@
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-strip-banner": "^0.2.0",
     "rollup-plugin-uglify": "^2.0.1",
+    "shx": "^0.2.2",
     "sinon": "^4.1.2",
     "uglify-es": "^3.2.0",
     "uglify-save-license": "^0.4.1"
@@ -61,18 +60,17 @@
   "scripts": {
     "lint": "eslint src test tools",
     "test": "mocha --require babel-register",
-    "clean:dist": "rimraf dist",
-    "clean:docs": "rimraf docs",
+    "clean:dist": "shx rm -rf dist",
+    "clean:docs": "shx rm -rf docs",
     "test:watch": "mocha --require babel-register --watch",
     "test:cover": "nyc --require babel-register mocha --timeout=3000",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "build": "run-s clean:* build:*",
     "build:dist": "run-s bundle",
-    "build:docs": "mkdirp docs && mustache resources/docs.json resources/docs.html > docs/index.html",
+    "build:docs": "shx mkdir docs && mustache resources/docs.json resources/docs.html > docs/index.html",
     "bundle": "run-s bundle:*",
     "bundle:cjs": "rollup -c tools/build-cjs.js",
     "bundle:es": "rollup -c tools/build-es.js",
-    "prepublish": "run-s build",
-    "publish:docs": "./tools/deploy-ghpages.sh"
+    "prepublish": "run-s build"
   }
 }
