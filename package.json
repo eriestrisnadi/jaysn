@@ -73,6 +73,6 @@
     "bundle:cjs": "rollup -c tools/build-cjs.js",
     "bundle:es": "rollup -c tools/build-es.js",
     "prepublish": "run-s build",
-    "publish:docs": "./tools/deploy.sh"
+    "publish:docs": "./tools/deploy-ghpages.sh"
   }
 }

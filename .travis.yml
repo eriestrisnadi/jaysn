@@ -2,7 +2,6 @@ sudo: required
 language: node_js
 env:
   global:
-  - GH_REF: github.com/lowsprofile/jaysn.git
   - secure: YR2Q4J/z4kuFENWMCrFH/Q+/hurbULgMiUJw2YGHe2nPZjrUWI1geePq51IvMxJZotugGEb2cf4nNIF8Dg5nKHWHDW9WDhVZVie5dcrz5R4Hh6wBXU7oXquJ+c02NdAbidzUlPR9//K8+eads/YnEOkv2HvlpPQRZK+1gritcyjGDRTxo+nZf/RJGkMHqWcvppUJzplDWn2TFslR3pgQZJzzq8n1dbuuMxwEnVymHsQegXow9//Ci9AwreYjO4a22wPJZhE65TClZErwxl7JNdF4oDGDQoFNypyxWldGb68dCsdRafISZqR8fFFziXgb1NFqqLphkJTqHiq00d37BILPM5qAS4VQLJishqJPWW6iotz/G8W+YaGay3y3tP2eTF9iKNRuBbmseCDC3Nbwi0orWjYZCMYTZWH/UNkCvcWlmAqoQ2ZNesCHDRegg5kUtet5sxGuDNHleaPS17sX7fQEhsWGGiwwGYaMHe329b14O6fiBeff9OpM690Cl+dzSXTaub3LiRHs77Qeoz893YWxm8q9ErV0gks1OY75la8+IOZVVsD/mU8skR2KKIKrb/xGz9/7le+7O4pY3iK3ehyRB65pDSKE9w9I+yGfZQ9Qln8mFBQ5n9zmFWT8rNQXx/2KuokYJ/KaSWILi9E4nYkZhZvlJRVKkQsAFs/H8ss=
 node_js:
 - '6'
@@ -21,4 +20,11 @@ script:
 - yarn test:cover
 after_success:
 - yarn coverage
-- yarn publish:docs
+deploy:
+  - provider: script
+    skip_cleanup: true
+    script: yarn publish:docs
+    on:
+      branch: dev
+      repo: lowsprofile/jaysn
+      tags: true
