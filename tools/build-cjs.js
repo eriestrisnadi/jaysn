@@ -17,10 +17,10 @@ const DIST_DIR = path.resolve('dist');
 export default {
   sourceMap: false,
   banner: copyright
-          .replace('{pkg.name}', pkg.name)
-          .replace('{pkg.homepage}', pkg.homepage)
-          .replace('{pkg.author}', pkg.author)
-          .replace('{pkg.license}', pkg.license),
+    .replace('{pkg.name}', pkg.name)
+    .replace('{pkg.homepage}', pkg.homepage)
+    .replace('{pkg.author}', pkg.author)
+    .replace('{pkg.license}', pkg.license),
   name: pkg.name,
   input: path.join(SRC_DIR, 'index.js'),
   external: ['fs', 'process', 'util', ...Object.keys(pkg.dependencies)],
@@ -54,7 +54,7 @@ export default {
         fs.writeFileSync(
           path.join(DIST_DIR, `${pkg.name}.min.js`),
           result.code,
-          'utf8'
+          'utf8',
         );
       },
     },

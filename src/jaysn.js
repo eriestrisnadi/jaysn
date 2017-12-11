@@ -23,8 +23,9 @@ export function Jaysn(keyName, schema = {}) {
 
   this.keyName = keyName;
   this.schema = Object.keys(schema).reduce((obj, key) => {
-    obj[key] = struct.optional(schema[key]);
-    return obj;
+    const result = obj;
+    result[key] = struct.optional(schema[key]);
+    return result;
   }, {});
 
   if (!existsSync(JAYSN_PATH)) {
