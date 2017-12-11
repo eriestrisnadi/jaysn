@@ -22,9 +22,11 @@ export function Jaysn(keyName, schema = {}) {
   }
 
   this.keyName = keyName;
-  this.schema = Object.keys(schema).reduce((obj, key) => (
-    { ...obj, [key]: struct.optional(schema[key]) }
-  ), {});
+  this.schema = Object.keys(schema).reduce((obj, key) => {
+    const result = obj;
+    result[key] = struct.optional(schema[key]);
+    return result;
+  }, {});
 
   if (!existsSync(JAYSN_PATH)) {
     writeFileSync(JAYSN_PATH, JSON.stringify({}, null, 4), { encoding: 'utf8' });
