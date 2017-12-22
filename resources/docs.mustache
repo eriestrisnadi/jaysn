@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>{{title}}</title>
+        <!-- UIkit CSS -->
+        <link rel="stylesheet" href="https://unpkg.com/uikit@3.0.0-beta.35/dist/css/uikit.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/highlight.js@9.12.0/styles/github.css">
+        <link rel="stylesheet" href="css/theme.css">
+    </head>
+
+    <body>
+        <div class="uk-offcanvas-content">
+            <!-- Desktop Navbar -->
+            <div class="uk-navbar-container tm-navbar-container" uk-sticky="media: 960">
+                <div class="uk-container uk-container-expand">
+                    <nav class="uk-navbar">
+                        <div class="uk-navbar-left">
+                            <a href="../" class="uk-navbar-item uk-logo">
+                                {{title}}
+                            </a>
+                        </div>
+                        <div class="uk-navbar-right">
+                            <ul class="uk-navbar-nav uk-visible@m">
+                                <li><a href="https://stackoverflow.com/questions/tagged/jaysn?sort=votes">Questions</a></li>
+                                <li><a href="https://github.com/lowsprofile/jaysn/">Github</a></li>
+                            </ul>
+                            <a class="uk-navbar-toggle uk-hidden@m" uk-navbar-toggle-icon href="#offcanvas" uk-toggle></a>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Sidebar Section -->
+            <div class="tm-sidebar-left uk-visible@m">
+                <h3>Documentation</h3>
+                <ul class="uk-nav uk-nav-default tm-nav uk-nav-parent-icon" uk-scrollspy-nav="closest: li; scroll: true; offset: 100">
+                    {{> menu}}
+                </ul>
+            </div>
+
+            <!-- Main Section -->
+            <div class="tm-main uk-section uk-section-default">
+                <div class="uk-container uk-position-relative">
+                    {{> content}}
+                </div>
+            </div>
+
+            <!-- Mobile Navbar -->
+            <div id="offcanvas" uk-offcanvas="mode: push; overlay: true">
+                <div class="uk-offcanvas-bar">
+                    <div class="uk-panel">
+                        <ul class="uk-nav uk-nav-default tm-nav">
+                            <li class="uk-nav-header">General</li>
+                            <li><a href="https://stackoverflow.com/questions/tagged/jaysn?sort=votes">Questions</a></li>
+                            <li><a href="https://github.com/lowsprofile/jaysn/">Github</a></li>
+                        </ul>
+                        
+                        <ul class="uk-nav uk-nav-default tm-nav uk-nav-parent-icon" uk-scrollspy-nav="closest: li; scroll: true; offset: 100">
+                            <li class="uk-nav-header">Documentation</li>
+                            {{> menu}}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- UIkit JS -->
+        <script src="https://unpkg.com/uikit@3.0.0-beta.35/dist/js/uikit.min.js"></script>
+        <script src="https://unpkg.com/uikit@3.0.0-beta.35/dist/js/uikit-icons.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+    </body>
+</html>

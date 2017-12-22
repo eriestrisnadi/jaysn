@@ -1,3 +1,14 @@
 {
-    "title": "Jaysn"
+    "title": "Jaysn",
+    "version": "0.1.0",
+    "pages": [
+        {
+            "title": "Add",
+            "content": "<pre><code class=\"javascript\">\r\n/**\r\n * Append new item to elements\r\n * The `data` is invoked with the {Object} value.\r\n *\r\n * @since 0.1.0\r\n * @param {Object} data Value of an item to add.\r\n * @returns {*} Returns the new of current array, else throw an `error`.\r\n * @example\r\n *\r\n * .jaysn file\r\n * {\r\n *   \"users\": [\r\n *      { \"user\": \"barney\",  \"age\": 36, \"active\": true },\r\n *      { \"user\": \"fred\",  \"age\": 40, \"active\": false }\r\n *   ]\r\n * }\r\n *\r\n */\r\n\r\n    new Jaysn('users', {\r\n        user: 'string',\r\n        age: 'number',\r\n        active: 'boolean'\r\n    }).add({ user: \"pebbles\",  age: 1, active: true })\r\n\r\n/**\r\n * // => objects for ['barney','fred','pebbles']\r\n */\r\n</code></pre>"
+        },
+        {
+            "title": "Update",
+            "content": "<pre><code class=\"javascript\">\r\n/**\r\n * Iterates over elements of, update an item and returning the updated item, else undefined\r\n * `predicate` returns truthy for. The `predicate` is invoked with a callback function\r\n * and `data` is invoked with the {Object} value.\r\n *\r\n * @since 0.1.0\r\n * @param {Object} data Value of an item to update.\r\n * @param {Function} predicate The callback function.\r\n * @returns {*} Returns the updated item, else undefined.\r\n * @example\r\n *\r\n * .jaysn file\r\n * {\r\n *   \"users\": [\r\n *      { \"user\": \"barney\",  \"age\": 36, \"active\": true },\r\n *      { \"user\": \"fred\",  \"age\": 40, \"active\": false },\r\n *      { \"user\": \"pebbles\",  \"age\": 1, \"active\": true }\r\n *   ]\r\n * }\r\n *\r\n */\r\n\r\n    new Jaysn('users', {\r\n        user: 'string',\r\n        age: 'number',\r\n        active: 'boolean'\r\n    }).update({\r\n        user: 'bonbon'\r\n    }, o => o.get('age') === 36)\r\n\r\n/**\r\n * // => object for 'bonbon'\r\n */\r\n</code></pre>"
+        }
+    ]
 }
