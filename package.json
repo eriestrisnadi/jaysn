@@ -19,7 +19,7 @@
     "LICENSE"
   ],
   "dependencies": {
-    "immutable": "^3.8.2",
+    "immutable": "~4.0.0-rc.9",
     "path": "^0.12.7",
     "stemmer": "^1.0.2",
     "superstruct": "^0.4.5",
@@ -59,18 +59,22 @@
   },
   "scripts": {
     "lint": "eslint src test tools",
-    "test": "mocha --require babel-register",
-    "clean:dist": "shx rm -rf dist",
-    "clean:docs": "shx rm -rf docs",
-    "test:watch": "mocha --require babel-register --watch",
+    "test": "run-s -l lint \"test:mocha {@}\" test:cover --",
+    "clean:dist": "run-s \"rm -rf dist\"",
+    "clean:docs": "run-s \"rm -rf docs\" \"mkdir docs\"",
+    "test:mocha": "mocha --require babel-register",
     "test:cover": "nyc --require babel-register mocha --timeout=3000",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "build": "run-s clean:* build:*",
-    "build:dist": "run-s bundle",
-    "build:docs": "shx mkdir docs && mustache resources/docs.json resources/docs.html > docs/index.html",
+    "build": "run-s build:*",
+    "build:dist": "run-s clean:dist bundle",
+    "build:docs": "run-s clean:docs mustache",
     "bundle": "run-s bundle:*",
-    "bundle:cjs": "rollup -c tools/build-cjs.js",
-    "bundle:es": "rollup -c tools/build-es.js",
-    "prepublish": "run-s build"
+    "bundle:cjs": "run-s \"rollup -c tools/build-cjs.js\"",
+    "bundle:es": "run-s \"rollup -c tools/build-es.js\"",
+    "mkdir": "shx mkdir",
+    "mustache": "node tools/build-docs && shx cp -r resources/css docs && mustache -p resources/partials/menu.mustache -p resources/partials/content.mustache resources/docs.json resources/docs.mustache > docs/index.html",
+    "prepublish": "run-s build",
+    "rm": "shx rm",
+    "rollup": "rollup"
   }
 }

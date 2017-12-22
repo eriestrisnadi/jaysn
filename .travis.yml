@@ -13,7 +13,6 @@ install:
 cache:
   yarn: true
 script:
-- yarn lint
-- yarn test:cover
+- yarn test
 after_success:
 - yarn coverage
