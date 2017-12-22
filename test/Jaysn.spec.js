@@ -10,24 +10,26 @@
 import { assert } from 'chai';
 import { existsSync, unlinkSync } from 'fs';
 import { fromJS } from 'immutable';
-import { Jaysn, JAYSN_PATH } from '../dist/jaysn.es';
+import { Jaysn, JAYSN_PATH } from '../src/index';
 
-const userSchema = {
-  id: 'number',
-  title: 'string',
-  is_published: 'boolean',
-  tags: ['string'],
-  author: {
+const schema = {
+  users: {
     id: 'number',
+    title: 'string',
+    is_published: 'boolean',
+    tags: ['string'],
+    author: {
+      id: 'number',
+    },
+  },
+  posts: {
+    id: 'number',
+    title: 'string',
+    user_id: 'number',
   },
 };
-const postSchema = {
-  id: 'number',
-  title: 'string',
-  user_id: 'number',
-};
 const userData = {
-  id: 34,
+  id: 1,
   title: 'Hello World',
   tags: ['news', 'features'],
   author: {
@@ -35,15 +37,12 @@ const userData = {
   },
 };
 const postData = {
-  id: 30,
+  id: 1,
   title: 'Post User 34',
   user_id: 34,
 };
-const postData2 = {
-  id: 20,
-  title: 'Post User 34 with id 20',
-  user_id: 34,
-};
+
+let DB;
 
 describe('new Jaysn()', () => {
 
@@ -51,104 +50,78 @@ describe('new Jaysn()', () => {
     if (existsSync(JAYSN_PATH)) {
       unlinkSync(JAYSN_PATH);
     }
-
-    new Jaysn('posts', postSchema)
-      .add(postData);
-
-    new Jaysn('posts', postSchema)
-      .add(postData2);
+    DB = new Jaysn(schema);
   });
 
-  describe('.add()', () => {
+  describe('.set(key, data).write()', () => {
 
-    it('should insert new item to the collection if validate true, else throw an `error`', () => {
-      const result = fromJS(new Jaysn('users', userSchema)
-        .add(userData)).equals(fromJS([userData]));
+    it('should change state when schema check is valid and equals with the inserted data', () => {
+      DB
+        .set('users', userData)
+        .write();
+      DB
+        .set('posts', [postData])
+        .write();
 
-      assert.isTrue(result);
+      DB
+        .set('posts', DB.get('posts').push(postData))
+        .write();
+
+      assert.isTrue(DB.get('users').equals(fromJS(userData)));
+      assert.isTrue(DB.get('posts').equals(fromJS([postData, postData])));
+    });
+
+    it('should not change state when schema check is invalid and db still the same as previous', () => {
+      userData.id = '1';
+      postData.id = '1';
+
+      DB
+        .set('users', userData)
+        .write();
+      DB
+        .set('posts', DB.get('posts').push(postData))
+        .write();
+
+      assert.isFalse(DB.get('users').equals(fromJS(userData)));
+      assert.isFalse(DB.get('posts').equals(fromJS([postData, postData, postData])));
     });
 
   });
 
-  describe('.get()', () => {
+  describe('.merge(original, other).write()', () => {
 
-    it('should returns an array of collection', () => {
-      const result = fromJS(new Jaysn('users', userSchema)
-        .get()).equals(fromJS([userData]));
+    it('should change state when schema check is valid and equals with the inserted data', () => {
+      userData.id = 1;
+      postData.id = 1;
+      userData.title = 'Hello Jaysn!';
+      const origin = DB.getState();
+      const other = fromJS({
+        users: userData,
+        posts: [postData],
+      });
 
-      assert.isTrue(result);
+      console.log(other)
+
+      DB
+        .merge(origin, other)
+        .write();
+
+      assert.isTrue(DB.getState().equals(other));
     });
 
-  });
+    it('should not change state when schema check is invalid and db still the same as previous', () => {
+      userData.id = 'Hello Jaysn!';
+      const origin = DB.getState();
+      const other = fromJS({
+        users: userData,
+        posts: [postData],
+      });
 
-  describe('.find()', () => {
+      DB
+        .merge(origin, other)
+        .write();
 
-    it('should returns the matched element, else `undefined`.', () => {
-      const result = fromJS(new Jaysn('users', userSchema)
-        .find(o => o.get('id') === 34)).equals(fromJS(userData));
-
-      assert.isTrue(result);
-    });
-
-  });
-
-  describe('.filter()', () => {
-
-    it('should returns the new filtered array.', () => {
-      const result = fromJS(new Jaysn('users', userSchema)
-        .filter(o => o.get('id') === 34)).equals(fromJS([userData]));
-
-      assert.isTrue(result);
-    });
-
-  });
-
-  describe('.hasOne()', () => {
-
-    it('should re-create the jaysn with hasOne relation.', () => {
-      const relation = fromJS(postData);
-      const result = fromJS(new Jaysn('users', userSchema)
-        .hasOne('posts', 'user_id', 'id')
-        .find(o => o.get('id') === 34)).equals(fromJS(userData).set('post', relation));
-
-      assert.isTrue(result);
-    });
-
-  });
-
-  describe('.hasMany()', () => {
-
-    it('should re-create the jaysn with hasMany relation.', () => {
-      const relation = fromJS([postData, postData2]);
-      const result = fromJS(new Jaysn('users', userSchema)
-        .hasMany('posts', 'user_id', 'id')
-        .find(o => o.get('id') === 34)).equals(fromJS(userData).set('posts', relation));
-
-      assert.isTrue(result);
-    });
-
-  });
-
-  describe('.update()', () => {
-
-    it('should update an item and returns the updated item.', () => {
-      const result = fromJS(new Jaysn('users', userSchema)
-        .update({
-          title: 'Hello Jaysn',
-        }, o => o.get('id') === 34)).equals(fromJS(userData).set('title', 'Hello Jaysn'));
-
-      assert.isTrue(result);
-    });
-
-  });
-
-  describe('.remove()', () => {
-
-    it('should delete an item and returns the new array without the deleted item.', () => {
-      const result = fromJS(new Jaysn('users', userSchema)
-        .remove(o => o.get('id') === 34)).equals(fromJS([userData]).delete(0));
-
-      assert.isTrue(result);
+      assert.isFalse(DB.getState().equals(other));
     });
 
   });
