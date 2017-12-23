@@ -1,4 +1,8 @@
 {
+  "env": {
+    "browser": true,
+    "node": true
+  },
   "rules": {
     "arrow-parens": ["error", "as-needed"],
     "arrow-body-style": ["error", "as-needed"],
@@ -10,6 +14,7 @@
         "peerDependencies": false
       }
     ],
+    "no-underscore-dangle": ["error", { "allowAfterThis": true }],
     "strict": "off"
   }
 }
