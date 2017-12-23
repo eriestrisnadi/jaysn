@@ -1,11 +1,9 @@
-import { Jaysn, JAYSN_PATH } from './jaysn';
+import { Jaysn } from './jaysn';
 
 export default {
-    Jaysn: Jaysn,
-    JAYSN_PATH: JAYSN_PATH,
+  Jaysn,
 };
 
 export {
-    Jaysn,
-    JAYSN_PATH,
+  Jaysn,
 };

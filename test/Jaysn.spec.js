@@ -10,7 +10,11 @@
 import { assert } from 'chai';
 import { existsSync, unlinkSync } from 'fs';
 import { fromJS } from 'immutable';
-import { Jaysn, JAYSN_PATH } from '../src/index';
+import { Jaysn } from '../src/index';
+
+const opts = {
+  source: 'db.json',
+};
 
 const schema = {
   users: {
@@ -47,10 +51,10 @@ let DB;
 describe('new Jaysn()', () => {
 
   before(() => {
-    if (existsSync(JAYSN_PATH)) {
-      unlinkSync(JAYSN_PATH);
+    if (existsSync(opts.source)) {
+      unlinkSync(opts.source);
     }
-    DB = new Jaysn(schema);
+    DB = new Jaysn(schema, opts);
   });
 
   describe('.set(key, data).write()', () => {
@@ -73,17 +77,14 @@ describe('new Jaysn()', () => {
 
     it('should not change state when schema check is invalid and db still the same as previous', () => {
       userData.id = '1';
-      postData.id = '1';
 
-      DB
-        .set('users', userData)
-        .write();
-      DB
-        .set('posts', DB.get('posts').push(postData))
-        .write();
-
-      assert.isFalse(DB.get('users').equals(fromJS(userData)));
-      assert.isFalse(DB.get('posts').equals(fromJS([postData, postData, postData])));
+      assert.throws(
+        () => DB
+          .set('users', userData)
+          .write(),
+        TypeError,
+        'Expected a value of type `number | undefined` for `id` but received `1`.',
+      );
     });
 
   });
@@ -100,8 +101,6 @@ describe('new Jaysn()', () => {
         posts: [postData],
       });
 
-      console.log(other)
-
       DB
         .merge(origin, other)
         .write();
@@ -117,11 +116,13 @@ describe('new Jaysn()', () => {
         posts: [postData],
       });
 
-      DB
-        .merge(origin, other)
-        .write();
-
-      assert.isFalse(DB.getState().equals(other));
+      assert.throws(
+        () => DB
+          .merge(origin, other)
+          .write(),
+        TypeError,
+        'Expected a value of type `number | undefined` for `id` but received `Hello Jaysn!`.',
+      );
     });
 
   });
