@@ -7,7 +7,9 @@ export class File extends Base {
   }
 
   write(data) {
-    writeFileSync(this.source, JSON.stringify(data, null, 4), { encoding: 'utf8' });
+    writeFileSync(this.source, JSON.stringify(data, null, 4), {
+      encoding: 'utf8',
+    });
 
     return this.read();
   }

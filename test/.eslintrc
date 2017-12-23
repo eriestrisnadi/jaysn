@@ -2,6 +2,9 @@
   "env": {
     "mocha": true
   },
+  "extends": [
+    "plugin:prettier/recommended"
+  ],
   "rules": {
     "import/no-extraneous-dependencies": [
       "error",

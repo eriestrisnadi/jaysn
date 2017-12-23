@@ -21,9 +21,7 @@
   "dependencies": {
     "immutable": "~4.0.0-rc.9",
     "path": "^0.12.7",
-    "stemmer": "^1.0.2",
-    "superstruct": "^0.4.5",
-    "uuid": "^3.1.0"
+    "superstruct": "^0.4.5"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -39,11 +37,14 @@
     "coveralls": "^3.0.0",
     "eslint": "^4.12.0",
     "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-prettier": "^2.4.0",
     "mocha": "^4.0.1",
     "mustache": "^2.3.0",
     "npm-run-all": "^4.1.2",
     "nyc": "^11.3.0",
+    "prettier": "1.9.2",
     "rollup": "^0.52.0",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-buble": "^0.18.0",
@@ -58,23 +59,24 @@
     "uglify-save-license": "^0.4.1"
   },
   "scripts": {
-    "lint": "eslint src test tools",
-    "test": "run-s -l lint \"test:mocha {@}\" test:cover --",
-    "clean:dist": "run-s \"rm -rf dist\"",
-    "clean:docs": "run-s \"rm -rf docs\" \"mkdir docs\"",
-    "test:mocha": "mocha --require babel-register",
-    "test:cover": "nyc --require babel-register mocha --timeout=3000",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "build": "run-s build:*",
+    "build": "run-s format build:*",
     "build:dist": "run-s clean:dist bundle",
     "build:docs": "run-s clean:docs mustache",
     "bundle": "run-s bundle:*",
     "bundle:cjs": "run-s \"rollup -c tools/build-cjs.js\"",
     "bundle:es": "run-s \"rollup -c tools/build-es.js\"",
+    "format": "run-s \"lint --fix\"",
+    "clean:dist": "run-s \"rm -rf dist\"",
+    "clean:docs": "run-s \"rm -rf docs\" \"mkdir docs\"",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "lint": "eslint src test tools",
     "mkdir": "shx mkdir",
     "mustache": "node tools/build-docs && shx cp -r resources/css docs && mustache -p resources/partials/menu.mustache -p resources/partials/content.mustache resources/docs.json resources/docs.mustache > docs/index.html",
     "prepublish": "run-s build",
     "rm": "shx rm",
-    "rollup": "rollup"
+    "rollup": "rollup",
+    "test": "run-s -l lint \"test:mocha {@}\" test:cover --",
+    "test:mocha": "mocha --require babel-register",
+    "test:cover": "nyc --require babel-register mocha --timeout=3000"
   }
 }

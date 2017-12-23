@@ -49,7 +49,6 @@ const postData = {
 let DB;
 
 describe('new Jaysn()', () => {
-
   before(() => {
     if (existsSync(opts.source)) {
       unlinkSync(opts.source);
@@ -58,18 +57,11 @@ describe('new Jaysn()', () => {
   });
 
   describe('.set(key, data).write()', () => {
-
     it('should change state when schema check is valid and equals with the inserted data', () => {
-      DB
-        .set('users', userData)
-        .write();
-      DB
-        .set('posts', [postData])
-        .write();
+      DB.set('users', userData).write();
+      DB.set('posts', [postData]).write();
 
-      DB
-        .set('posts', DB.get('posts').push(postData))
-        .write();
+      DB.set('posts', DB.get('posts').push(postData)).write();
 
       assert.isTrue(DB.get('users').equals(fromJS(userData)));
       assert.isTrue(DB.get('posts').equals(fromJS([postData, postData])));
@@ -79,18 +71,14 @@ describe('new Jaysn()', () => {
       userData.id = '1';
 
       assert.throws(
-        () => DB
-          .set('users', userData)
-          .write(),
+        () => DB.set('users', userData).write(),
         TypeError,
-        'Expected a value of type `number | undefined` for `id` but received `1`.',
+        'Expected a value of type `number | undefined` for `id` but received `1`.'
       );
     });
-
   });
 
   describe('.merge(original, other).write()', () => {
-
     it('should change state when schema check is valid and equals with the inserted data', () => {
       userData.id = 1;
       postData.id = 1;
@@ -101,9 +89,7 @@ describe('new Jaysn()', () => {
         posts: [postData],
       });
 
-      DB
-        .merge(origin, other)
-        .write();
+      DB.merge(origin, other).write();
 
       assert.isTrue(DB.getState().equals(other));
     });
@@ -117,14 +103,10 @@ describe('new Jaysn()', () => {
       });
 
       assert.throws(
-        () => DB
-          .merge(origin, other)
-          .write(),
+        () => DB.merge(origin, other).write(),
         TypeError,
-        'Expected a value of type `number | undefined` for `id` but received `Hello Jaysn!`.',
+        'Expected a value of type `number | undefined` for `id` but received `Hello Jaysn!`.'
       );
     });
-
   });
-
 });

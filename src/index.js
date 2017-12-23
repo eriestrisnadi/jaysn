@@ -4,6 +4,4 @@ export default {
   Jaysn,
 };
 
-export {
-  Jaysn,
-};
+export { Jaysn };

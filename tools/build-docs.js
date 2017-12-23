@@ -11,7 +11,7 @@ function capitalize(string) {
   return [string.charAt(0).toUpperCase(), string.slice(1)].join('');
 }
 
-docs.map((o) => {
+docs.map(o => {
   pages.push({
     title: capitalize(o).replace('.md', ''),
     content: readFileSync(join(DOCS_PATH, o), 'utf8'),
@@ -19,10 +19,14 @@ docs.map((o) => {
   return o;
 });
 
-const result = JSON.stringify({
-  title: capitalize(name),
-  version,
-  pages,
-}, null, 4);
+const result = JSON.stringify(
+  {
+    title: capitalize(name),
+    version,
+    pages,
+  },
+  null,
+  4
+);
 
 writeFileSync(join(RESOURCES_PATH, 'docs.json'), result, 'utf8');
