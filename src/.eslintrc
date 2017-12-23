@@ -3,18 +3,10 @@
     "browser": true,
     "node": true
   },
+  "extends": [
+    "plugin:prettier/recommended"
+  ],
   "rules": {
-    "arrow-parens": ["error", "as-needed"],
-    "arrow-body-style": ["error", "as-needed"],
-    "eslint-env": "es6",
-    "import/no-extraneous-dependencies": [
-      "error",
-      {
-        "optionalDependencies": false,
-        "peerDependencies": false
-      }
-    ],
-    "no-underscore-dangle": ["error", { "allowAfterThis": true }],
-    "strict": "off"
+    "no-underscore-dangle": ["error", { "allowAfterThis": true }]
   }
 }

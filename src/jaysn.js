@@ -22,10 +22,7 @@ const IMMUTABLE_TYPE = [
   'Collection',
 ];
 
-const IMMUTABLE_READ = [
-  'get',
-  'getIn',
-];
+const IMMUTABLE_READ = ['get', 'getIn'];
 
 const IMMUTABLE_WRITE = [
   'delete',
@@ -49,21 +46,27 @@ export class Jaysn {
       source: JAYSN_PATH,
     };
 
-    const defaultData = Immutable.Map(Object.keys(schema).reduce((V, K) => {
-      const result = V;
-      result[K] = {};
-      return result;
-    }, {})).toJS();
+    const defaultData = Immutable.Map(
+      Object.keys(schema).reduce((V, K) => {
+        const result = V;
+        result[K] = {};
+        return result;
+      }, {})
+    ).toJS();
 
     // Merge options with defaultOptions
-    const opts = Immutable.fromJS(defaultOpts).merge(Immutable.fromJS(options)).toJS();
+    const opts = Immutable.fromJS(defaultOpts)
+      .merge(Immutable.fromJS(options))
+      .toJS();
     let adapter;
 
     // Let's pick the specific adapter
     switch (opts.use) {
       case 'LocalStorage':
         if (typeof localStorage === 'undefined' || localStorage === null) {
-          throw new TypeError('LocalStorage adapter only available on browser!');
+          throw new TypeError(
+            'LocalStorage adapter only available on browser!'
+          );
         }
         adapter = new LocalStorage(opts.source);
         if (!localStorage.getItem(opts.source)) {
@@ -134,11 +137,13 @@ export class Jaysn {
             const V = data[O];
             const L = V.length;
             if (
-              typeof V === 'object'
-              && V !== null
-              && typeof V !== 'function'
-              && typeof L === 'number'
-              && L > -1 && L % 1 === 0 && L <= 9007199254740991
+              typeof V === 'object' &&
+              V !== null &&
+              typeof V !== 'function' &&
+              typeof L === 'number' &&
+              L > -1 &&
+              L % 1 === 0 &&
+              L <= 9007199254740991
             ) {
               V.forEach(NV => {
                 struct(this.schema[O])(NV);

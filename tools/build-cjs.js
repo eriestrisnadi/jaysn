@@ -51,7 +51,9 @@ export default {
           mkdirSync(DIST_DIR);
         }
 
-        writeFileSync(join(DIST_DIR, `${pkg.name}.min.js`), result.code, { encoding: 'utf8' });
+        writeFileSync(join(DIST_DIR, `${pkg.name}.min.js`), result.code, {
+          encoding: 'utf8',
+        });
       },
     },
   ],
