@@ -1,14 +1,5 @@
 {
     "title": "Jaysn",
     "version": "0.1.0",
-    "pages": [
-        {
-            "title": "Add",
-            "content": "<pre><code class=\"javascript\">\n/**\n * Append new item to elements\n * The `data` is invoked with the {Object} value.\n *\n * @since 0.1.0\n * @param {Object} data Value of an item to add.\n * @returns {*} Returns the new of current array, else throw an `error`.\n * @example\n *\n * .jaysn file\n * {\n *   \"users\": [\n *      { \"user\": \"barney\",  \"age\": 36, \"active\": true },\n *      { \"user\": \"fred\",  \"age\": 40, \"active\": false }\n *   ]\n * }\n *\n */\n\n    new Jaysn('users', {\n        user: 'string',\n        age: 'number',\n        active: 'boolean'\n    }).add({ user: \"pebbles\",  age: 1, active: true })\n\n/**\n * // => objects for ['barney','fred','pebbles']\n */\n</code></pre>"
-        },
-        {
-            "title": "Update",
-            "content": "<pre><code class=\"javascript\">\n/**\n * Iterates over elements of, update an item and returning the updated item, else undefined\n * `predicate` returns truthy for. The `predicate` is invoked with a callback function\n * and `data` is invoked with the {Object} value.\n *\n * @since 0.1.0\n * @param {Object} data Value of an item to update.\n * @param {Function} predicate The callback function.\n * @returns {*} Returns the updated item, else undefined.\n * @example\n *\n * .jaysn file\n * {\n *   \"users\": [\n *      { \"user\": \"barney\",  \"age\": 36, \"active\": true },\n *      { \"user\": \"fred\",  \"age\": 40, \"active\": false },\n *      { \"user\": \"pebbles\",  \"age\": 1, \"active\": true }\n *   ]\n * }\n *\n */\n\n    new Jaysn('users', {\n        user: 'string',\n        age: 'number',\n        active: 'boolean'\n    }).update({\n        user: 'bonbon'\n    }, o => o.get('age') === 36)\n\n/**\n * // => object for 'bonbon'\n */\n</code></pre>"
-        }
-    ]
+    "pages": []
 }
