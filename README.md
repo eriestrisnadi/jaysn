@@ -1,5 +1,5 @@
 # Jaysn
-[![npm](https://img.shields.io/npm/v/jaysn.svg)](https://www.npmjs.org/package/jaysn) [![travisci](https://travis-ci.org/lowsprofile/jaysn.svg?branch=master)](https://travis-ci.org/lowsprofile/jaysn) [![donate](https://img.shields.io/badge/donate-patreon-red.svg)](https://www.patreon.com/bePatron?c=1404837)
+[![Coverage Status](https://coveralls.io/repos/github/lowsprofile/jaysn/badge.svg?branch=master)](https://coveralls.io/github/lowsprofile/jaysn?branch=master) [![npm](https://img.shields.io/npm/v/jaysn.svg)](https://www.npmjs.org/package/jaysn) [![travisci](https://travis-ci.org/lowsprofile/jaysn.svg?branch=master)](https://travis-ci.org/lowsprofile/jaysn) [![donate](https://img.shields.io/badge/donate-patreon-red.svg)](https://www.patreon.com/bePatron?c=1404837)
 
 Lightweight JSON database for Node, Hybrid, and Browser.  
 Powered by Immutable and Superstruct.
