@@ -1,7 +1,7 @@
 {
   "name": "jaysn",
-  "version": "0.1.0",
-  "description": "A databaseless data storing with one JSON file.",
+  "version": "0.1.1",
+  "description": "Lightweight JSON database for Node, Hybrid, and browser.",
   "homepage": "https://lowsprofile.github.io/jaysn/",
   "repository": "lowsprofile/jaysn",
   "author": "Eries Trisnadi <me@eries.id> (https://eries.id)",
