@@ -8,7 +8,7 @@ const pages = [];
 const docs = readdirSync(DOCS_PATH);
 
 function capitalize(string) {
-  return [string.charAt(0).toUpperCase(), string.slice(1)].join('');
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 docs.map(o => {

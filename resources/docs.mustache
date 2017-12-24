@@ -7,8 +7,8 @@
         <title>{{title}}</title>
         <!-- UIkit CSS -->
         <link rel="stylesheet" href="https://unpkg.com/uikit@3.0.0-beta.35/dist/css/uikit.min.css">
-        <link rel="stylesheet" href="https://unpkg.com/highlight.js@9.12.0/styles/github.css">
         <link rel="stylesheet" href="css/theme.css">
+        <script src="https://embed.runkit.com" data-element-id="RunKit"></script>
     </head>
 
     <body>
@@ -23,7 +23,8 @@
                             </a>
                         </div>
                         <div class="uk-navbar-right">
-                            <ul class="uk-navbar-nav uk-visible@m">
+                            <ul class="uk-navbar-nav uk-visible@m" uk-scrollspy-nav="closest: li; scroll: true; offset: 100">
+                                <li><a href="#RunKit">Playground</a></li>
                                 <li><a href="https://stackoverflow.com/questions/tagged/jaysn?sort=votes">Questions</a></li>
                                 <li><a href="https://github.com/lowsprofile/jaysn/">Github</a></li>
                             </ul>
@@ -44,6 +45,29 @@
             <!-- Main Section -->
             <div class="tm-main uk-section uk-section-default">
                 <div class="uk-container uk-position-relative">
+                    <div id="RunKit">
+                        const { jaysn } = require('jaysn');
+                        const schema = {
+                            posts: {
+                                id: 'number',
+                                title: 'string',
+                                author: {
+                                    id: 'number',
+                                },
+                            },
+                        };
+                        const postData = {
+                            id: 1,
+                            title: 'Post User 34',
+                            author: {
+                                id: 1,
+                            },
+                        };
+
+                        const db = jaysn(schema);
+                        db.set('posts', [postData]).write();
+                        console.log({db: db.getState(), posts: db.get('posts')});
+                    </div>
                     {{> content}}
                 </div>
             </div>
@@ -67,9 +91,6 @@
             </div>
         </div>
         <!-- UIkit JS -->
-        <script src="https://unpkg.com/uikit@3.0.0-beta.35/dist/js/uikit.min.js"></script>
-        <script src="https://unpkg.com/uikit@3.0.0-beta.35/dist/js/uikit-icons.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-        <script>hljs.initHighlightingOnLoad();</script>
+        <script src="https://unpkg.com/uikit@3.0.0-beta.35/dist/js/uikit.js"></script>
     </body>
 </html>
