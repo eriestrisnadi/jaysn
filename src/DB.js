@@ -1,12 +1,10 @@
 import { existsSync } from 'fs';
 import { struct } from 'superstruct';
 import Immutable from 'immutable';
-import { cwd } from 'process';
-import { join } from 'path';
 import { File } from './adapters/File';
 import { LocalStorage } from './adapters/LocalStorage';
 
-export const JAYSN_PATH = join(cwd(), '.jaysn');
+export const JAYSN_PATH = '.jaysn';
 
 const IMMUTABLE_TYPE = [
   'List',
@@ -39,7 +37,7 @@ const IMMUTABLE_WRITE = [
   'updateIn',
 ];
 
-export class Jaysn {
+export class DB {
   constructor(schema, options = {}) {
     const defaultOpts = {
       use: 'File',
@@ -100,7 +98,8 @@ export class Jaysn {
         Immutable[K].prototype.write = () => {
           const data = this.getState().toJS();
 
-          adapter.write(data);
+          this._state.push(Immutable.fromJS(adapter.write(data)));
+          this._stateId += 1;
           return this.getState();
         };
       }
@@ -117,6 +116,8 @@ export class Jaysn {
     IMMUTABLE_READ.forEach(method => {
       this[method] = (...args) => {
         const state = this.getState();
+        this._state.push(Immutable.fromJS(adapter.read()));
+        this._stateId += 1;
 
         return state[method](...args);
       };
@@ -167,3 +168,5 @@ export class Jaysn {
     return this._state[this._stateId];
   }
 }
+
+export default DB;

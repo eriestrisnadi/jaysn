@@ -10,7 +10,7 @@
 import { assert } from 'chai';
 import { existsSync, unlinkSync } from 'fs';
 import { fromJS } from 'immutable';
-import { Jaysn } from '../src/index';
+import { jaysn } from '../src/Jaysn';
 
 const opts = {
   source: 'db.json',
@@ -53,7 +53,7 @@ describe('new Jaysn()', () => {
     if (existsSync(opts.source)) {
       unlinkSync(opts.source);
     }
-    DB = new Jaysn(schema, opts);
+    DB = jaysn(schema, opts);
   });
 
   describe('.set(key, data).write()', () => {
