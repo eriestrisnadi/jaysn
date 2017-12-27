@@ -81,7 +81,11 @@ describe('new Jaysn()', () => {
 
   describe('.get(key).find(predicate)', () => {
     it('should change state when schema check is valid and equals with the inserted data', () => {
-      assert.isTrue(DB.get('posts').find(o => o.get('id') === 1).equals(fromJS(postData)));
+      assert.isTrue(
+        DB.get('posts')
+          .find(o => o.get('id') === 1)
+          .equals(fromJS(postData))
+      );
     });
   });
 
@@ -95,12 +99,12 @@ describe('new Jaysn()', () => {
 
   describe('.update(key, predicate).write()', () => {
     it('should change state when schema check is valid and equals with the updated data', () => {
-      DB
-        .update('users', o => o.set('title', 'Hi Jaysn!'))
-        .write();
+      DB.update('users', o => o.set('title', 'Hi Jaysn!')).write();
       DB.update('posts', o => o.push(postData)).write();
 
-      assert.isTrue(DB.get('users').equals(fromJS(userData).set('title', 'Hi Jaysn!')));
+      assert.isTrue(
+        DB.get('users').equals(fromJS(userData).set('title', 'Hi Jaysn!'))
+      );
       assert.isTrue(DB.get('posts').equals(fromJS([postData, postData])));
     });
 
@@ -117,7 +121,8 @@ describe('new Jaysn()', () => {
     it('should change state when schema check is valid and equals with the inserted data', () => {
       const userMod = Object.assign({}, userData);
       const postMod = Object.assign({}, postData);
-      postMod.id = userMod.id = 1;
+      postMod.id = 1;
+      userMod.id = 1;
       userMod.title = 'Hello Jaysn!';
       const origin = DB.getState();
       const other = fromJS({
