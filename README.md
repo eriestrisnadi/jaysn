@@ -2,7 +2,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/lowsprofile/jaysn/badge.svg?branch=master)](https://coveralls.io/github/lowsprofile/jaysn?branch=master) [![npm](https://img.shields.io/npm/v/jaysn.svg)](https://www.npmjs.org/package/jaysn) [![travisci](https://travis-ci.org/lowsprofile/jaysn.svg?branch=master)](https://travis-ci.org/lowsprofile/jaysn) [![donate](https://img.shields.io/badge/donate-patreon-red.svg)](https://www.patreon.com/bePatron?c=1404837)
 
 Lightweight JSON database for Node, Hybrid, and Browser.  
-Powered by Immutable and Superstruct.
+Powered by [Immutable](https://github.com/facebook/immutable-js) and [Superstruct](https://github.com/ianstormtaylor/superstruct).
 
 ## Getting Started
 ### Node / Hybrid
@@ -77,23 +77,58 @@ Set posts.
 ```js
 db.set('posts', [])
   .write();
+// Map { posts: List [ ... ] }
 ```
 
 Get posts.
 ```js
 db.get('posts');
+// Map { posts: List [ ... ] }
 ```
 
-Adding posts.
+Adding or updating posts.
 ```js
 const data = { id: 1, title: 'Hello Jaysn!'};
+const data2 = Object.assign({}, data);
+data2.id = 2;
+
+// You can do something like this
 db.set('posts', db.get('posts').push(data))
   .write();
 // Map { posts: List [ Map { id: 1, title: 'Hello Jaysn!' } ] }
+
+
+// But I will prefer this method
+db.update('posts', o => o.push(data2))
+  .write();
+// Map { posts: List [ Map { id: 1, title: 'Hello Jaysn!' }, Map { id: 2, title: 'Hello Jaysn!' } ] }
+```
+
+Find a post with specific data.
+```js
+db.get('posts')
+  .find('posts', o => o.get('id') === 2);
+// Map { id: 2, title: 'Hello Jaysn!' }
+```
+
+Delete a post with specific data.
+```js
+// You can do something like this
+const index = db.get('posts').findIndex(o => o.get('id') === 1);
+const index2 = db.get('posts').findIndex(o => o.get('id') === 2);
+db.update('posts', o => o.delete(index)).write();
+  .write();
+// Map { posts: List [ Map { id: 2, title: 'Hello Jaysn!' } ] }
+
+
+// But I will prefer this method
+db.deleteIn(['posts', index2]);
+  .write();
+// Map { posts: List [ ... ] }
 ```
 
 ## License
 MIT License © 2017-Present **[lowsprofile](https://github.com/lowsprofile)**. All rights reserved.
 
 ## Legal
-This is a free and open source app. Use it at your own risk.
+This is a free and open source. Use it at your own risk.

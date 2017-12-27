@@ -68,25 +68,61 @@ describe('new Jaysn()', () => {
     });
 
     it('should not change state when schema check is invalid and db still the same as previous', () => {
-      userData.id = '1';
+      const data = Object.assign({}, userData);
+      data.id = '1';
 
       assert.throws(
-        () => DB.set('users', userData).write(),
+        () => DB.set('users', data).write(),
         TypeError,
-        'Expected a value of type `number | undefined` for `id` but received `1`.'
+        'Expected a value of type `number | undefined` for `id` but received `"1"`.'
+      );
+    });
+  });
+
+  describe('.get(key).find(predicate)', () => {
+    it('should change state when schema check is valid and equals with the inserted data', () => {
+      assert.isTrue(DB.get('posts').find(o => o.get('id') === 1).equals(fromJS(postData)));
+    });
+  });
+
+  describe('.get(key).delete(index)', () => {
+    it('should change state when schema check is valid and equals without the deleted data', () => {
+      const index = DB.get('posts').findIndex(o => o.get('id') === 1);
+      DB.deleteIn(['posts', index]).write();
+      assert.isTrue(DB.get('posts').equals(fromJS([postData])));
+    });
+  });
+
+  describe('.update(key, predicate).write()', () => {
+    it('should change state when schema check is valid and equals with the updated data', () => {
+      DB
+        .update('users', o => o.set('title', 'Hi Jaysn!'))
+        .write();
+      DB.update('posts', o => o.push(postData)).write();
+
+      assert.isTrue(DB.get('users').equals(fromJS(userData).set('title', 'Hi Jaysn!')));
+      assert.isTrue(DB.get('posts').equals(fromJS([postData, postData])));
+    });
+
+    it('should not change state when schema check is invalid and db still the same as previous', () => {
+      assert.throws(
+        () => DB.update('users', o => o.set('id', '1')).write(),
+        TypeError,
+        'Expected a value of type `number | undefined` for `id` but received `"1"`.'
       );
     });
   });
 
   describe('.merge(original, other).write()', () => {
     it('should change state when schema check is valid and equals with the inserted data', () => {
-      userData.id = 1;
-      postData.id = 1;
-      userData.title = 'Hello Jaysn!';
+      const userMod = Object.assign({}, userData);
+      const postMod = Object.assign({}, postData);
+      postMod.id = userMod.id = 1;
+      userMod.title = 'Hello Jaysn!';
       const origin = DB.getState();
       const other = fromJS({
-        users: userData,
-        posts: [postData],
+        users: userMod,
+        posts: [postMod],
       });
 
       DB.merge(origin, other).write();
@@ -95,17 +131,18 @@ describe('new Jaysn()', () => {
     });
 
     it('should not change state when schema check is invalid and db still the same as previous', () => {
-      userData.id = 'Hello Jaysn!';
+      const userMod = Object.assign({}, userData);
+      userMod.id = 'Hello Jaysn!';
       const origin = DB.getState();
       const other = fromJS({
-        users: userData,
+        users: userMod,
         posts: [postData],
       });
 
       assert.throws(
         () => DB.merge(origin, other).write(),
         TypeError,
-        'Expected a value of type `number | undefined` for `id` but received `Hello Jaysn!`.'
+        'Expected a value of type `number | undefined` for `id` but received `"Hello Jaysn!"`.'
       );
     });
   });
