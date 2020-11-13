@@ -6,7 +6,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import json from 'rollup-plugin-json';
 import saveLicense from 'uglify-save-license';
 import stripBanner from 'rollup-plugin-strip-banner';
-import nodeResolve from 'rollup-plugin-node-resolve';
+import builtins from 'rollup-plugin-node-builtins';
 import { capitalize } from './utils';
 import pkg from '../package.json';
 
@@ -26,16 +26,19 @@ export default {
   input: join(SRC_DIR, `${capitalize(pkg.name)}.js`),
   external: ['fs', 'process', 'util', ...Object.keys(pkg.dependencies)],
   globals: {
+    fs: 'fs',
     superstruct: 'Superstruct',
     immutable: 'Immutable',
   },
   output: {
-    export: 'named',
+    exports:
+      'named' /** Disable warning for default imports. ref https://github.com/rollup/rollup/issues/2106#issuecomment-482790635 */,
+    sourcemap: true,
     file: join(DIST_DIR, `${pkg.name}.js`),
     format: 'umd',
   },
   plugins: [
-    nodeResolve(),
+    builtins(),
     commonjs(),
     json(),
     stripBanner(),

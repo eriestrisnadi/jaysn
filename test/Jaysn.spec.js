@@ -83,7 +83,7 @@ describe('new Jaysn()', () => {
     it('should change state when schema check is valid and equals with the inserted data', () => {
       assert.isTrue(
         DB.get('posts')
-          .find(o => o.get('id') === 1)
+          .find((o) => o.get('id') === 1)
           .equals(fromJS(postData))
       );
     });
@@ -91,7 +91,7 @@ describe('new Jaysn()', () => {
 
   describe('.get(key).delete(index)', () => {
     it('should change state when schema check is valid and equals without the deleted data', () => {
-      const index = DB.get('posts').findIndex(o => o.get('id') === 1);
+      const index = DB.get('posts').findIndex((o) => o.get('id') === 1);
       DB.deleteIn(['posts', index]).write();
       assert.isTrue(DB.get('posts').equals(fromJS([postData])));
     });
@@ -99,18 +99,16 @@ describe('new Jaysn()', () => {
 
   describe('.update(key, predicate).write()', () => {
     it('should change state when schema check is valid and equals with the updated data', () => {
-      DB.update('users', o => o.set('title', 'Hi Jaysn!')).write();
-      DB.update('posts', o => o.push(postData)).write();
+      DB.update('users', (o) => o.set('title', 'Hi Jaysn!')).write();
+      DB.update('posts', (o) => o.push(postData)).write();
 
-      assert.isTrue(
-        DB.get('users').equals(fromJS(userData).set('title', 'Hi Jaysn!'))
-      );
+      assert.isTrue(DB.get('users').equals(fromJS(userData).set('title', 'Hi Jaysn!')));
       assert.isTrue(DB.get('posts').equals(fromJS([postData, postData])));
     });
 
     it('should not change state when schema check is invalid and db still the same as previous', () => {
       assert.throws(
-        () => DB.update('users', o => o.set('id', '1')).write(),
+        () => DB.update('users', (o) => o.set('id', '1')).write(),
         TypeError,
         'Expected a value of type `number | undefined` for `id` but received `"1"`.'
       );
