@@ -53,18 +53,14 @@ export class DB {
     ).toJS();
 
     // Merge options with defaultOptions
-    const opts = Immutable.fromJS(defaultOpts)
-      .merge(Immutable.fromJS(options))
-      .toJS();
+    const opts = Immutable.fromJS(defaultOpts).merge(Immutable.fromJS(options)).toJS();
     let adapter;
 
     // Let's pick the specific adapter
     switch (opts.use) {
       case 'LocalStorage':
         if (typeof localStorage === 'undefined' || localStorage === null) {
-          throw new TypeError(
-            'LocalStorage adapter only available on browser!'
-          );
+          throw new TypeError('LocalStorage adapter only available on browser!');
         }
         adapter = new LocalStorage(opts.source);
         if (!localStorage.getItem(opts.source)) {
@@ -113,7 +109,7 @@ export class DB {
     this._stateId = 0;
 
     // Return Latest State when using an Immutable Read Functions
-    IMMUTABLE_READ.forEach(method => {
+    IMMUTABLE_READ.forEach((method) => {
       this[method] = (...args) => {
         const state = this.getState();
         this._state.push(Immutable.fromJS(adapter.read()));
@@ -124,7 +120,7 @@ export class DB {
     });
 
     // Return and push newState, then increase stateId when using an Immutable Write Functions
-    IMMUTABLE_WRITE.forEach(method => {
+    IMMUTABLE_WRITE.forEach((method) => {
       this[method] = (...args) => {
         const state = this.getState();
         const newState = state[method](...args);
@@ -134,7 +130,7 @@ export class DB {
 
         // Validate each data with superstruct
         try {
-          Object.keys(data).forEach(O => {
+          Object.keys(data).forEach((O) => {
             const V = data[O];
             const L = V.length;
             if (
@@ -146,7 +142,7 @@ export class DB {
               L % 1 === 0 &&
               L <= 9007199254740991
             ) {
-              V.forEach(NV => {
+              V.forEach((NV) => {
                 struct(this.schema[O])(NV);
               });
             } else {

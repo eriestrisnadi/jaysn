@@ -12,7 +12,7 @@ function capitalize(string) {
 
 if (existsSync(DOCS_PATH)) {
   const docs = readdirSync(DOCS_PATH);
-  docs.map(o => {
+  docs.map((o) => {
     pages.push({
       title: capitalize(o).replace('.md', ''),
       content: readFileSync(join(DOCS_PATH, o), 'utf8'),
