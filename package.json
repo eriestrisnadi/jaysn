@@ -1,6 +1,6 @@
 {
   "name": "jaysn",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Lightweight JSON database for Node, Hybrid, and browser.",
   "homepage": "https://eriestrisnadi.github.io/jaysn/",
   "repository": "lowsprofile/jaysn",
@@ -44,7 +44,6 @@
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-json": "^2.3.0",
     "rollup-plugin-node-builtins": "^2.1.2",
-    "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-strip-banner": "^0.2.0",
     "rollup-plugin-uglify": "^2.0.1",
     "shx": "^0.2.2",
