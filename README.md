@@ -128,7 +128,7 @@ db.deleteIn(['posts', index2]);
 ```
 
 ## License
-MIT License © 2017-Present **[lowsprofile](https://github.com/lowsprofile)**. All rights reserved.
+MIT License © 2017-Present **[eriestrisnadi](https://github.com/eriestrisnadi)**. All rights reserved.
 
 ## Legal
 This is a free and open source. Use it at your own risk.
