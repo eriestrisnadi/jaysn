@@ -1,9 +1,9 @@
 {
   "name": "jaysn",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Lightweight JSON database for Node, Hybrid, and browser.",
   "homepage": "https://eriestrisnadi.github.io/jaysn/",
-  "repository": "lowsprofile/jaysn",
+  "repository": "eriestrisnadi/jaysn",
   "author": "Eries Trisnadi <me@eries.id> (https://eriestrisnadi.github.io)",
   "license": "MIT",
   "keywords": [],

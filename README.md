@@ -1,5 +1,5 @@
 # Jaysn
-[![Coverage Status](https://coveralls.io/repos/github/lowsprofile/jaysn/badge.svg?branch=master)](https://coveralls.io/github/lowsprofile/jaysn?branch=master) [![npm](https://img.shields.io/npm/v/jaysn.svg)](https://www.npmjs.org/package/jaysn) [![travisci](https://travis-ci.org/lowsprofile/jaysn.svg?branch=master)](https://travis-ci.org/lowsprofile/jaysn) [![donate](https://img.shields.io/badge/donate-patreon-red.svg)](https://www.patreon.com/bePatron?c=1404837)
+[![Coverage Status](https://coveralls.io/repos/github/eriestrisnadi/jaysn/badge.svg?branch=master)](https://coveralls.io/github/eriestrisnadi/jaysn?branch=master) [![npm](https://img.shields.io/npm/v/jaysn.svg)](https://www.npmjs.org/package/jaysn) [![travisci](https://travis-ci.org/eriestrisnadi/jaysn.svg?branch=master)](https://travis-ci.org/eriestrisnadi/jaysn) [![donate](https://img.shields.io/badge/donate-patreon-red.svg)](https://www.patreon.com/bePatron?c=1404837)
 
 Lightweight JSON database for Node, Hybrid, and Browser.  
 Powered by [Immutable](https://github.com/facebook/immutable-js) and [Superstruct](https://github.com/ianstormtaylor/superstruct).
@@ -47,7 +47,7 @@ A UMD build is also available on [unpkg](https://unpkg.com/) for testing and qui
 ```
 
 ## Live Examples
-- [RunKit example for Node/Hybrid](https://runkit.com/lowsprofile/5a3ff3aa22eb6c0011063af7)
+- [RunKit example for Node/Hybrid](https://runkit.com/eriestrisnadi/5a3ff3aa22eb6c0011063af7)
 - [JSFiddle example for Browser](https://jsfiddle.net/wdgyczx8/)
 
 ## API
