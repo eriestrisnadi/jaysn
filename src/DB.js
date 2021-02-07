@@ -28,7 +28,10 @@ export class DB {
     switch (opts.use) {
       case 'LocalStorage':
         if (typeof localStorage === 'undefined' || localStorage === null) {
-          throw new TypeError('LocalStorage adapter only available on browser!');
+          /* eslint-disable */
+          const NodeLocalStorage = require('node-localstorage').LocalStorage;
+          global.localStorage = new NodeLocalStorage(opts.source);
+          /* eslint-enable */
         }
         this.adapter = new LocalStorage(opts.source);
         if (!localStorage.getItem(opts.source)) {
