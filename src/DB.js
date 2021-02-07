@@ -3,40 +3,9 @@ import { struct } from 'superstruct';
 import Immutable from 'immutable';
 import { File } from './adapters/File';
 import { LocalStorage } from './adapters/LocalStorage';
+import { IMMUTABLE_READ, IMMUTABLE_TYPE, IMMUTABLE_WRITE, JAYSN_PATH } from './constants';
 
-export const JAYSN_PATH = '.jaysn';
-
-const IMMUTABLE_TYPE = [
-  'List',
-  'Map',
-  'OrderedMap',
-  'Set',
-  'OrderedSet',
-  'Stack',
-  'Range',
-  'Repeat',
-  'Record',
-  'Seq',
-  'Collection',
-];
-
-const IMMUTABLE_READ = ['get', 'getIn'];
-
-const IMMUTABLE_WRITE = [
-  'delete',
-  'deleteIn',
-  'merge',
-  'mergeDeep',
-  'mergeDeepIn',
-  'mergeIn',
-  'remove',
-  'removeIn',
-  'set',
-  'setIn',
-  'update',
-  'updateIn',
-];
-
+export { JAYSN_PATH } from './constants';
 export class DB {
   constructor(schema, options = {}) {
     const defaultOpts = {
@@ -54,24 +23,26 @@ export class DB {
 
     // Merge options with defaultOptions
     const opts = Immutable.fromJS(defaultOpts).merge(Immutable.fromJS(options)).toJS();
-    let adapter;
 
     // Let's pick the specific adapter
     switch (opts.use) {
       case 'LocalStorage':
         if (typeof localStorage === 'undefined' || localStorage === null) {
-          throw new TypeError('LocalStorage adapter only available on browser!');
+          /* eslint-disable */
+          const NodeLocalStorage = require('node-localstorage').LocalStorage;
+          global.localStorage = new NodeLocalStorage(opts.source);
+          /* eslint-enable */
         }
-        adapter = new LocalStorage(opts.source);
+        this.adapter = new LocalStorage(opts.source);
         if (!localStorage.getItem(opts.source)) {
-          adapter.write(defaultData);
+          this.adapter.write(defaultData);
         }
         break;
 
       default:
-        adapter = new File(opts.source);
+        this.adapter = new File(opts.source);
         if (!existsSync(opts.source)) {
-          adapter.write(defaultData);
+          this.adapter.write(defaultData);
         }
         break;
     }
@@ -94,7 +65,7 @@ export class DB {
         Immutable[K].prototype.write = () => {
           const data = this.getState().toJS();
 
-          this._state.push(Immutable.fromJS(adapter.write(data)));
+          this._state.push(Immutable.fromJS(this.adapter.write(data)));
           this._stateId += 1;
           return this.getState();
         };
@@ -103,22 +74,29 @@ export class DB {
     }, {});
 
     // Init state from the db
-    const initState = Immutable.fromJS(adapter.read());
+    const initState = Immutable.fromJS(this.adapter.read());
 
     this._state = [initState];
     this._stateId = 0;
 
+    this.initiateImmutableRead();
+    this.initiateImmutableWrite();
+  }
+
+  initiateImmutableRead() {
     // Return Latest State when using an Immutable Read Functions
     IMMUTABLE_READ.forEach((method) => {
       this[method] = (...args) => {
         const state = this.getState();
-        this._state.push(Immutable.fromJS(adapter.read()));
+        this._state.push(Immutable.fromJS(this.adapter.read()));
         this._stateId += 1;
 
         return state[method](...args);
       };
     });
+  }
 
+  initiateImmutableWrite() {
     // Return and push newState, then increase stateId when using an Immutable Write Functions
     IMMUTABLE_WRITE.forEach((method) => {
       this[method] = (...args) => {
@@ -140,7 +118,7 @@ export class DB {
               typeof L === 'number' &&
               L > -1 &&
               L % 1 === 0 &&
-              L <= 9007199254740991
+              L <= Number.MAX_SAFE_INTEGER + 1
             ) {
               V.forEach((NV) => {
                 struct(this.schema[O])(NV);
