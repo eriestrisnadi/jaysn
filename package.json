@@ -1,6 +1,6 @@
 {
   "name": "jaysn",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "description": "Lightweight JSON database for Node, Hybrid, and browser.",
   "homepage": "https://eriestrisnadi.github.io/jaysn/",
   "repository": "eriestrisnadi/jaysn",
