@@ -1,4 +1,19 @@
-# Jaysn
+# Jaysn (Archived)
+
+> [!IMPORTANT]
+> ## JAYSN HAS MOVED HOME  
+> Jaysn has moved home due to the loss of access to the npm account. This codebase is now effectively archived, and all new development, updates, and bug fixes are being done in [Struma](https://github.com/eriestrisnadi/struma). Please refer to the new repository for continued support and updates.
+
+## Moving Forward
+
+For all new features, bug fixes, and continued improvements, please visit the new repository:
+
+- [Struma](https://github.com/eriestrisnadi/struma)
+
+Thanks for your interest and support in Jaysn, and hope you join us in continuing the journey with Struma!
+
+---
+
 [![Coverage Status](https://coveralls.io/repos/github/eriestrisnadi/jaysn/badge.svg?branch=master)](https://coveralls.io/github/eriestrisnadi/jaysn?branch=master) [![npm](https://img.shields.io/npm/v/jaysn.svg)](https://www.npmjs.org/package/jaysn) [![travisci](https://travis-ci.org/eriestrisnadi/jaysn.svg?branch=master)](https://travis-ci.org/eriestrisnadi/jaysn) [![donate](https://img.shields.io/badge/donate-patreon-red.svg)](https://www.patreon.com/bePatron?c=1404837)
 
 Lightweight JSON database for Node, Hybrid, and Browser.  
